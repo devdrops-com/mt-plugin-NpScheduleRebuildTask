@@ -8,8 +8,14 @@ author_link: http://www.example.com/about/
 doc_link: http://www.example.com/docs/
 l10n_class: NpScheduleRebuildTask::L10N
 
+blog_config_template: blog_config.tmpl
+settings:
+    blog_config:
+        default:
+        scope: blog
+
 tasks:
     MyCustomTask:
         label: Do something every two minutes
-        frequency: 120
+        frequency: 60
         code: $NpScheduleRebuildTask::NpScheduleRebuildTask::Tasks::do_task
