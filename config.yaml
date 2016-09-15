@@ -1,0 +1,15 @@
+id: NpScheduleRebuildTask
+key: NpScheduleRebuildTask
+name: <__trans phrase="Sample Plugin Scheduled Tasks">
+version: 1.1
+description: <__trans phrase="_PLUGIN_DESCRIPTION">
+author_name: <__trans phrase="_PLUGIN_AUTHOR">
+author_link: http://www.example.com/about/
+doc_link: http://www.example.com/docs/
+l10n_class: NpScheduleRebuildTask::L10N
+
+tasks:
+    MyCustomTask:
+        label: Do something every two minutes
+        frequency: 120
+        code: $NpScheduleRebuildTask::NpScheduleRebuildTask::Tasks::do_task
