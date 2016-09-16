@@ -1,11 +1,11 @@
 id: NpScheduleRebuildTask
 key: NpScheduleRebuildTask
-name: <__trans phrase="Sample Plugin Scheduled Tasks">
+name: <__trans phrase="Schedule rebuild task Plugin">
 version: 1.1
 description: <__trans phrase="_PLUGIN_DESCRIPTION">
 author_name: <__trans phrase="_PLUGIN_AUTHOR">
-author_link: http://www.example.com/about/
-doc_link: http://www.example.com/docs/
+author_link: http://nawagate.com/
+doc_link: https://github.com/devdrops-com/mt-plugin-NpScheduleRebuildTask/
 l10n_class: NpScheduleRebuildTask::L10N
 
 blog_config_template: blog_config.tmpl

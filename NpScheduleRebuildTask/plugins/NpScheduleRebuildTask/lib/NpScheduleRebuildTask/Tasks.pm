@@ -3,8 +3,6 @@ use strict;
 use Data::Dumper;
 sub do_task {
   my $plugin = MT->component('NpScheduleRebuildTask');
-  # require MT::FileMgr;
-  # my $fmgr = MT::FileMgr->new('Local');
   require MT::Website;
   my @websites = MT::Website->load();
   foreach my $website (@websites) {
@@ -14,11 +12,9 @@ sub do_task {
     my $blog_id = 'blog:' . $website->id;
     my $blog_config_index_template_ids = $plugin->get_config_value('blog_config_index_template_ids', $blog_id) || "";
     my @blog_config_index_template_ids = split(/,/, $blog_config_index_template_ids);
-  foreach my $blog_config_index_template_id (@blog_config_index_template_ids){
+    foreach my $blog_config_index_template_id (@blog_config_index_template_ids){
       next unless $blog_config_index_template_id;
-doLog("1blog_config_index_template_id => " . $blog_config_index_template_id);
       my $tmpl = MT::Template->load( $blog_config_index_template_id );
-doLog("2tmpl => " . Dumper($tmpl));
       my $file = $tmpl->outfile;
       require File::Spec;
       unless ( File::Spec->file_name_is_absolute($file) ) {
@@ -26,13 +22,11 @@ doLog("2tmpl => " . Dumper($tmpl));
       }
       my $fmgr = $blog->file_mgr;
       $fmgr->delete($file);
-doLog("3delete file => " . $file);
-    MT->rebuild_indexes(
+      MT->rebuild_indexes(
         BlogID   => $website->id,
         Template => $tmpl,
         Force    => 1,
-    );
-doLog("4rebuild");
+      );
     }
   }
 }
