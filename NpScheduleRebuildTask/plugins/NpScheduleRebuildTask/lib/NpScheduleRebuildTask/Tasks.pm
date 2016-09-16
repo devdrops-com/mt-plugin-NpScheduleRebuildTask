@@ -2,49 +2,39 @@ package NpScheduleRebuildTask::Tasks;
 use strict;
 use Data::Dumper;
 sub do_task {
-doLog("do_task");
   my $plugin = MT->component('NpScheduleRebuildTask');
+  # require MT::FileMgr;
+  # my $fmgr = MT::FileMgr->new('Local');
   require MT::Website;
   my @websites = MT::Website->load();
   foreach my $website (@websites) {
-doLog(Dumper($plugin));
-doLog("website_id => " . $website->id);
-    # my $blog_config_index_template_ids = $plugin->get_config_value('blog_config_index_template_ids', "blog:$website->id") || "";
+    require MT::Blog;
+    my $blog = MT::Blog->load($website->id);
+    my $site_path = $blog->site_path;
     my $blog_id = 'blog:' . $website->id;
     my $blog_config_index_template_ids = $plugin->get_config_value('blog_config_index_template_ids', $blog_id) || "";
-doLog("blog_config_index_template_ids => " . $blog_config_index_template_ids);
-#     my $word_sys = $plugin->get_config_value('blog_config_index_template_ids', 'system');
-# doLog("word_sys => " . $word_sys);
-# MT->rebuild_indexes(
-#   BlogID   => $website->id,
-#   Template => MT::Template->load( 35 ),
-#   Force    => 1,
-# );
     my @blog_config_index_template_ids = split(/,/, $blog_config_index_template_ids);
   foreach my $blog_config_index_template_id (@blog_config_index_template_ids){
-doLog("blog_config_index_template_id => " . $blog_config_index_template_id);
       next unless $blog_config_index_template_id;
+doLog("1blog_config_index_template_id => " . $blog_config_index_template_id);
+      my $tmpl = MT::Template->load( $blog_config_index_template_id );
+doLog("2tmpl => " . Dumper($tmpl));
+      my $file = $tmpl->outfile;
+      require File::Spec;
+      unless ( File::Spec->file_name_is_absolute($file) ) {
+          $file = File::Spec->catfile( $site_path, $file );
+      }
+      my $fmgr = $blog->file_mgr;
+      $fmgr->delete($file);
+doLog("3delete file => " . $file);
     MT->rebuild_indexes(
         BlogID   => $website->id,
-        # Template => MT::Template->load( $blog_config_index_template_id ),
-        # Force    => 1,
+        Template => $tmpl,
+        Force    => 1,
     );
+doLog("4rebuild");
+    }
   }
-}
-#   require MT::Blog;
-#   my @blogs = MT::Blog->load();
-#   foreach my $blog (@blogs) {
-#     my @blog_config_index_template_ids = split(/,/, $plugin->get_config_value('blog_config_index_template_ids', $blog->id));
-#     foreach my $blog_config_index_template_id (@blog_config_index_template_ids){
-# doLog("blog_config_index_template_id => " . $blog_config_index_template_id);
-#       next unless $blog_config_index_template_id;
-#       MT->rebuild_indexes(
-#         BlogID   => $blog->id,
-#         Template => MT::Template->load( $blog_config_index_template_id ),
-#         Force    => 1,
-#       );
-#     }
-#   }
 }
 
 sub doLog {

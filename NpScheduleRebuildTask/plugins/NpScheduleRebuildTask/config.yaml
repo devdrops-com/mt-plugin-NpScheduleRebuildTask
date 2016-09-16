@@ -14,7 +14,7 @@ settings:
         default:
         scope: blog
 tasks:
-    MyCustomTask:
+    NpScheduleRebuildTask:
         label: Do something every two minutes
         frequency: 60
         code: $NpScheduleRebuildTask::NpScheduleRebuildTask::Tasks::do_task
